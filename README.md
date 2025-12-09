@@ -7,7 +7,7 @@
   </p>
 
   <p>
-    <a href="portifolio-fb.vercel.app">
+    <a href="https://portifolio-fb.vercel.app">
       <img src="https://img.shields.io/badge/VER_PROJETO_ONLINE-38bdf8?style=for-the-badge&logo=vercel&logoColor=black" alt="Deploy Vercel" />
     </a>
   </p>
