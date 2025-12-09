@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+<div align="center">
+  <img src="public/favicon.svg" width="80" alt="Logo FBDev" />
+  <h1>&lt;FBDev /&gt; | Portfólio Profissional</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+  <p>
+    <strong>Interface moderna, responsiva e focada em experiência do usuário.</strong>
+  </p>
 
-Currently, two official plugins are available:
+  <p>
+    <a href="portifolio-fb.vercel.app">
+      <img src="https://img.shields.io/badge/VER_PROJETO_ONLINE-38bdf8?style=for-the-badge&logo=vercel&logoColor=black" alt="Deploy Vercel" />
+    </a>
+  </p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  <br />
 
-## React Compiler
+  <img src="https://img.shields.io/badge/React-20232a?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Styled_Components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" alt="Styled Components" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+</div>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<br />
 
-## Expanding the ESLint configuration
+## 💻 Sobre o Projeto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Bem-vindo ao meu portfólio oficial. Este projeto foi desenvolvido como uma **Single Page Application (SPA)** para demonstrar minhas habilidades em desenvolvimento Front-end, focando em código limpo, componentização e design moderno.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+A interface segue uma estética **Dark Mode** com acentos em **Neon Blue (#38bdf8)**, utilizando tipografia monoespaçada (Fira Code) para remeter ao ambiente de desenvolvimento.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### ✨ Destaques Visuais
+- **Glassmorphism:** Efeitos de vidro fosco no header e cards.
+- **Smooth Scroll:** Navegação fluida entre seções sem recarregar a página.
+- **Responsividade:** Layout adaptável para Mobile, Tablet e Desktop.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🛠 Tecnologias & Ferramentas
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+O projeto foi construído utilizando as melhores práticas do ecossistema React atual:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **[React](https://reactjs.org/):** Biblioteca principal para construção da UI.
+- **[TypeScript](https://www.typescriptlang.org/):** Para tipagem estática e maior segurança no código.
+- **[Styled Components](https://styled-components.com/):** Para estilização CSS-in-JS, permitindo temas dinâmicos e manutenção facilitada.
+- **[Vite](https://vitejs.dev/):** Build tool de próxima geração para desenvolvimento ultrarrápido.
+- **[Eslint](https://eslint.org/):** Padronização e qualidade de código.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🚀 Como rodar localmente
+
+Se desejar clonar e rodar este projeto no seu computador:
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/Bueno19/Portifolio-FB.git](https://github.com/Bueno19/Portifolio-FB.git)
