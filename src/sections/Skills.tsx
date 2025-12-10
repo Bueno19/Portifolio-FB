@@ -1,80 +1,131 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
-
-interface Skill { name: string; level: number; color: string; }
-
-const mySkills: Skill[] = [
-    { name: 'HTML5 & CSS3', level: 95, color: '#e34c26' },
-    { name: 'JavaScript (ES6+)', level: 85, color: '#f7df1e' },
-    { name: 'TypeScript', level: 75, color: '#3178c6' },
-    { name: 'React & Hooks', level: 90, color: '#61dafb' },
-    { name: 'Styled Components', level: 80, color: '#db7093' },
-    { name: 'Git & GitHub', level: 90, color: '#f1502f' },
-    { name: 'Node.js', level: 50, color: '#68a063' },
-];
-
-const fillBar = (level: number) => keyframes` from { width: 0; } to { width: ${level}%; } `;
-
-const SkillCard: React.FC<{ skill: Skill }> = ({ skill }) => (
-    <Card>
-        <HeaderInfo>
-            <SkillName>{skill.name}</SkillName>
-            <Percentage>{skill.level}%</Percentage>
-        </HeaderInfo>
-        <ProgressBarContainer>
-            <Progress $level={skill.level} $color={skill.color} />
-        </ProgressBarContainer>
-    </Card>
-);
+import styled from 'styled-components';
 
 export const Skills: React.FC = () => {
+    // Cores e porcentagens para as barras
+    const skills = [
+        { name: 'React & Hooks', percent: 95, color: '#61DAFB' }, // Azul React
+        { name: 'TypeScript', percent: 85, color: '#3178C6' },    // Azul TS
+        { name: 'Styled Components', percent: 90, color: '#DB7093' }, // Rosa
+        { name: 'JavaScript (ES6+)', percent: 92, color: '#F7DF1E' }, // Amarelo
+        { name: 'Node.js', percent: 80, color: '#339933' },       // Verde Node
+        { name: 'SQL / MySQL', percent: 75, color: '#00758F' },    // Azul Banco
+        
+        // Novas Linguagens (Backend/Core)
+        { name: 'Java', percent: 70, color: '#f89820' },          // Laranja Java
+        { name: 'C# / .NET', percent: 65, color: '#a179dc' },     // Roxo C#
+        { name: 'Python', percent: 75, color: '#3776AB' },         // Azul Python
+        { name: 'Assembly', percent: 40, color: '#A9A9A9' },       // Cinza
+    ];
+
     return (
-        // ID OBRIGATÓRIO PARA NAVEGAÇÃO
-        <SectionContainer id="skills">
-            <Container>
-                <HeaderContent>
-                    <SectionTitle>
-                        <span className="purple">function</span> <span className="blue">getSkills</span>() {'{'}
-                    </SectionTitle>
-                    <SubTitle>// Tecnologias que domino e utilizo no dia a dia</SubTitle>
-                </HeaderContent>
-                <Grid>
-                    {mySkills.map((skill) => <SkillCard key={skill.name} skill={skill} />)}
-                </Grid>
-                <SectionClosing>{'}'}</SectionClosing>
-            </Container>
-        </SectionContainer>
+        <Container>
+            <CodeHeader>
+                <span className="keyword">function</span> <span className="func-name">getSkills</span><span className="params">()</span> <span className="bracket">{'{'}</span>
+                <div className="comment">// Tecnologias que domino e utilizo no dia a dia</div>
+            </CodeHeader>
+
+            <SkillsGrid>
+                {skills.map((skill) => (
+                    <SkillCard key={skill.name} $color={skill.color}>
+                        <div className="skill-info">
+                            <span className="skill-name">{skill.name}</span>
+                            <span className="skill-percent">{skill.percent}%</span>
+                        </div>
+                        <ProgressBar>
+                            <ProgressFill $width={skill.percent} $color={skill.color} />
+                        </ProgressBar>
+                    </SkillCard>
+                ))}
+            </SkillsGrid>
+            
+            <CodeFooter><span className="bracket">{'}'}</span></CodeFooter>
+        </Container>
     );
 };
 
-// --- Estilos ---
-const SectionContainer = styled.section`
-    width: 100%; padding: 140px 20px; background-color: #0b1120;
-    display: flex; justify-content: center; border-top: 1px solid #1e293b;
+// --- ESTILOS ---
+
+const Container = styled.div`
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
 `;
-const Container = styled.div` width: 100%; max-width: 1200px; `;
-const HeaderContent = styled.div` margin-bottom: 80px; text-align: center; `;
-const SectionTitle = styled.h2`
-    font-size: 3rem; color: #e2e8f0; margin-bottom: 15px; font-family: 'Fira Code', monospace;
-    .purple { color: #c084fc; } .blue { color: #38bdf8; }
-    @media (max-width: 768px) { font-size: 2rem; }
+
+const CodeHeader = styled.div`
+    text-align: center;
+    font-family: 'Fira Code', monospace;
+    font-size: 2rem;
+    margin-bottom: 4rem;
+
+    .keyword { color: #c792ea; font-weight: bold; }
+    .func-name { color: #82aaff; }
+    .params { color: #89ddff; }
+    .bracket { color: #ffd700; }
+    .comment { 
+        color: #607b96; font-size: 1rem; 
+        margin-top: 5px; opacity: 0.8;
+    }
+    
+    @media (max-width: 768px) { font-size: 1.4rem; }
 `;
-const SubTitle = styled.p` color: #64748b; font-size: 1.1rem; font-family: 'Fira Code', monospace; `;
-const SectionClosing = styled.h2`
-    font-size: 3rem; text-align: center; color: #e2e8f0; margin-top: 60px; font-family: 'Fira Code', monospace; opacity: 0.5;
+
+const CodeFooter = styled.div`
+    text-align: center; font-family: 'Fira Code', monospace; font-size: 2rem; margin-top: 3rem;
+    .bracket { color: #ffd700; }
 `;
-const Grid = styled.div` display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; `;
-const Card = styled.div`
-    background: rgba(30, 41, 59, 0.4); padding: 35px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease; backdrop-filter: blur(5px); display: flex; flex-direction: column; justify-content: center;
-    &:hover { transform: translateY(-8px); border-color: #38bdf8; background: rgba(30, 41, 59, 0.6); box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5); }
+
+const SkillsGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 `;
-const HeaderInfo = styled.div` display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; `;
-const SkillName = styled.h3` font-size: 1.2rem; color: #f1f5f9; font-weight: 600; letter-spacing: 0.5px; `;
-const Percentage = styled.span` font-weight: bold; color: #94a3b8; font-size: 1rem; font-family: 'Fira Code', monospace; `;
-const ProgressBarContainer = styled.div` width: 100%; height: 10px; background-color: #1e293b; border-radius: 20px; overflow: hidden; `;
-const Progress = styled.div<{ $level: number; $color: string }>`
-    height: 100%; width: ${({ $level }) => $level}%; background-color: ${({ $color }) => $color};
-    border-radius: 20px; box-shadow: 0 0 15px ${({ $color }) => $color};
-    animation: ${({ $level }) => fillBar($level)} 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+const SkillCard = styled.div<{ $color: string }>`
+    background: #1e293b;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-5px);
+        border-color: ${({ $color }) => $color};
+        box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5);
+    }
+
+    .skill-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        font-family: 'Fira Code', monospace;
+    }
+
+    .skill-name {
+        font-weight: bold;
+        color: #e2e8f0;
+    }
+
+    .skill-percent {
+        color: ${({ $color }) => $color};
+        font-weight: bold;
+    }
+`;
+
+const ProgressBar = styled.div`
+    width: 100%;
+    height: 10px;
+    background-color: #0f172a;
+    border-radius: 5px;
+    overflow: hidden;
+`;
+
+const ProgressFill = styled.div<{ $width: number; $color: string }>`
+    width: ${({ $width }) => $width}%;
+    height: 100%;
+    background-color: ${({ $color }) => $color};
+    border-radius: 5px;
+    transition: width 1s ease-in-out;
+    box-shadow: 0 0 10px ${({ $color }) => $color};
 `;

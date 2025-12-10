@@ -1,77 +1,174 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Header } from './components/Header';
 
-// Importe os SEUS componentes atuais.
-// Se eles estiverem em pastas diferentes, ajuste o caminho.
+// --- 1. IMPORTAÇÃO DOS COMPONENTES ---
+
+// Estrutura e Utilitários
+import { Header } from './components/Header';
+import { ScrollReveal } from './components/ScrollReveal';
+
+// Seções da Página Principal (Landing Page)
 import { Hero } from './sections/Hero';
 import { Skills } from './sections/Skills';
 import { Projects } from './sections/Projects';
+import { Playground } from './sections/Playground'; 
 import { Contact } from './sections/Contact';
 
-// Se você não tiver o componente ScrollReveal, pode remover a importação e o uso dele abaixo.
-import { ScrollReveal } from './components/ScrollReveal'; 
+// Aplicações do Laboratório (Apps Interativos)
+import { MarketMonitor } from './lab/MarketMonitor';
+import GamerSection from './lab/GamerSection'; // Atenção: Ajuste se for export const ou default
+import { AIChatBot } from './lab/AIChatBot';
+
+const App: React.FC = () => {
+  // Estado que define qual "tela" o usuário está vendo agora
+  const [currentView, setCurrentView] = useState<'home' | 'market' | 'gamer' | 'chatbot'>('home');
+
+  // Função auxiliar para trocar de tela e garantir scroll no topo
+  const handleViewChange = (view: 'home' | 'market' | 'gamer' | 'chatbot') => {
+    setCurrentView(view);
+    if (view === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <>
+      {/* O Header recebe o estado atual e a função de troca */}
+      {/* O 'as any' previne erros se a tipagem do Header for estrita demais */}
+      <Header 
+        currentView={currentView} 
+        onChangeView={(view) => handleViewChange(view as any)} 
+      />
+      
+      <MainContent>
+          
+          {/* --- CENÁRIO 1: TELA INICIAL (HOME) --- */}
+          {currentView === 'home' && (
+            <>
+              {/* Hero Section */}
+              <SectionWrapper id="home">
+                <Hero />
+              </SectionWrapper>
+              
+              {/* Skills com animação de scroll */}
+              <ScrollReveal>
+                <SectionWrapper id="skills">
+                    <Skills />
+                </SectionWrapper>
+              </ScrollReveal>
+              
+              {/* Projetos */}
+              <ScrollReveal>
+                <SectionWrapper id="projects">
+                    <Projects />
+                </SectionWrapper>
+              </ScrollReveal>
+
+              {/* VITRINE (PLAYGROUND) */}
+              {/* Aqui passamos a função para ativar os botões dos cartões */}
+              <ScrollReveal>
+                <SectionWrapper id="lab">
+                    <Playground onChangeView={handleViewChange} />
+                </SectionWrapper>
+              </ScrollReveal>
+              
+              {/* Contato */}
+              <ScrollReveal>
+                <SectionWrapper id="contact">
+                    <Contact />
+                </SectionWrapper>
+              </ScrollReveal>
+
+              <Footer>
+                <p>Desenvolvido com React, TypeScript & Styled Components</p>
+                <small>© {new Date().getFullYear()} Felipe Bueno. Todos os direitos reservados.</small>
+              </Footer>
+            </>
+          )}
+
+          {/* --- CENÁRIO 2: MONITOR DE MERCADO --- */}
+          {currentView === 'market' && (
+            <MarketMonitor onClose={() => handleViewChange('home')} />
+          )}
+
+          {/* --- CENÁRIO 3: ÁREA GAMER --- */}
+          {currentView === 'gamer' && (
+            <GamerSectionWrapper>
+               <GamerSection />
+               
+               {/* Botão Flutuante para Sair da Área Gamer */}
+               <FloatingBackButton onClick={() => handleViewChange('home')}>
+                 ✕ SAIR DA ZONE
+               </FloatingBackButton>
+            </GamerSectionWrapper>
+          )}
+
+          {/* --- CENÁRIO 4: AI CHATBOT --- */}
+          {currentView === 'chatbot' && (
+            <AIChatBot onClose={() => handleViewChange('home')} />
+          )}
+
+      </MainContent>
+    </>
+  );
+};
+
+// --- ESTILOS GERAIS (Styled Components) ---
 
 const MainContent = styled.main`
-    padding-top: 80px; /* Compensa o Header fixo */
+    /* Compensa a altura do Header fixo (80px) */
+    padding-top: 80px; 
     width: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #0f172a; /* Cor de fundo principal */
+    background-color: #0f172a; /* Cor de fundo principal (Slate Dark) */
     overflow-x: hidden;
 `;
 
-// Wrapper crucial para a navegação funcionar
 const SectionWrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
 `;
 
-const App: React.FC = () => {
-  return (
-    <>
-      <Header />
-      
-      <MainContent>
-          
-          {/* ID HOME -> Conecta com o logo e botão Home */}
-          <SectionWrapper id="home">
-            <Hero />
-          </SectionWrapper>
-          
-          {/* ID SKILLS -> Conecta com o botão Skills */}
-          {/* Se não tiver ScrollReveal, remova a tag <ScrollReveal> e mantenha o SectionWrapper */}
-          <ScrollReveal>
-            <SectionWrapper id="skills">
-                <Skills />
-            </SectionWrapper>
-          </ScrollReveal>
-          
-          {/* ID PROJECTS -> Conecta com o botão Projects */}
-          <ScrollReveal>
-            <SectionWrapper id="projects">
-                <Projects />
-            </SectionWrapper>
-          </ScrollReveal>
-          
-          {/* ID CONTACT -> Conecta com o botão Contact */}
-          <ScrollReveal>
-            <SectionWrapper id="contact">
-                <Contact />
-            </SectionWrapper>
-          </ScrollReveal>
+// Wrapper para animação de entrada da tela Gamer
+const GamerSectionWrapper = styled.div`
+    width: 100%;
+    animation: fadeIn 0.5s ease;
+    position: relative;
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+`;
 
-      </MainContent>
+// Botão para sair da tela cheia do Gamer
+const FloatingBackButton = styled.button`
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(239, 68, 68, 0.8); /* Vermelho translúcido */
+    color: white;
+    border: 1px solid #ef4444;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
 
-      <Footer>
-        <p>Desenvolvido com React & Styled Components</p>
-        <small>© {new Date().getFullYear()} Felipe Bueno.</small>
-      </Footer>
-    </>
-  );
-};
+    &:hover {
+        background: #ef4444;
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    }
+`;
 
 const Footer = styled.footer`
     background-color: #020617;
@@ -80,8 +177,10 @@ const Footer = styled.footer`
     border-top: 1px solid #1e293b;
     color: #64748b;
     width: 100%;
-    p { margin-bottom: 10px; }
-    small { opacity: 0.6; }
+    font-family: 'Fira Code', monospace;
+    
+    p { margin-bottom: 10px; font-size: 0.9rem; }
+    small { opacity: 0.6; font-size: 0.8rem; }
 `;
 
 export default App;
