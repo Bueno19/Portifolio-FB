@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// Atualizei a interface para aceitar 'creative' também, prevenindo erros de tipagem no App.tsx
 interface PlaygroundProps {
-    onChangeView?: (view: 'home' | 'market' | 'gamer' | 'chatbot') => void;
+    onChangeView?: (view: 'home' | 'market' | 'gamer' | 'chatbot' | 'creative') => void;
 }
 
 export const Playground: React.FC<PlaygroundProps> = ({ onChangeView }) => {
@@ -17,7 +18,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ onChangeView }) => {
       <CodeSnippet>
         <span className="comment">// Welcome to my experimental zone</span>
         <br />
-        <span className="keyword">const</span> <span className="var">experiments</span> = [<span className="string">'Finance'</span>, <span className="string">'Gaming'</span>, <span className="string">'Artificial Intelligence'</span>];
+        <span className="keyword">const</span> <span className="var">experiments</span> = [<span className="string">'Finance'</span>, <span className="string">'Gaming'</span>, <span className="string">'AI'</span>, <span className="string">'Creative UI'</span>];
       </CodeSnippet>
 
       <Grid>
@@ -47,6 +48,16 @@ export const Playground: React.FC<PlaygroundProps> = ({ onChangeView }) => {
           <StatusBadge $active={true}>ONLINE (DEMO)</StatusBadge>
           <div className="hover-text">INICIAR CONVERSA</div>
         </Card>
+
+        {/* --- CARD 4: CREATIVE SHOWCASE (Novo!) --- */}
+        <Card onClick={() => onChangeView && onChangeView('creative')} className="featured">
+          <div className="icon">✨</div>
+          <h3>Creative UI</h3>
+          <p>Galeria de componentes visuais avançados (Holo Card, Magnetic Button).</p>
+          <StatusBadge $active={true} style={{borderColor: '#d8b4fe', color: '#d8b4fe', background: 'rgba(216, 180, 254, 0.1)'}}>NEW</StatusBadge>
+          <div className="hover-text" style={{color: '#d8b4fe'}}>EXPLORAR UI</div>
+        </Card>
+
       </Grid>
     </Container>
   );
@@ -99,7 +110,7 @@ const CodeSnippet = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajustei minmax para caber melhor 4 itens */
   gap: 30px;
   width: 100%;
 `;
@@ -116,6 +127,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  min-height: 260px; /* Altura mínima para uniformidade */
 
   /* Estilo para cartões bloqueados */
   &.locked {
@@ -124,12 +136,24 @@ const Card = styled.div`
     border-style: dashed;
   }
 
-  /* Efeito Hover */
+  /* Estilo especial para o Card Featured (Creative UI) */
+  &.featured {
+    border-color: rgba(216, 180, 254, 0.3);
+    &:hover {
+        border-color: #d8b4fe;
+        box-shadow: 0 10px 40px -10px rgba(216, 180, 254, 0.3);
+    }
+  }
+
+  /* Efeito Hover Padrão */
   &:not(.locked):hover {
     transform: translateY(-10px);
     background: rgba(30, 41, 59, 0.6);
-    border-color: #38bdf8;
-    box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.3);
+    /* Se não for featured, usa azul */
+    &:not(.featured) {
+        border-color: #38bdf8;
+        box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.3);
+    }
 
     .hover-text {
         opacity: 1;

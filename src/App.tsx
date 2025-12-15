@@ -16,15 +16,17 @@ import { Contact } from './sections/Contact';
 
 // Aplicações do Laboratório (Apps Interativos)
 import { MarketMonitor } from './lab/MarketMonitor';
-import GamerSection from './lab/GamerSection'; // Atenção: Ajuste se for export const ou default
+import GamerSection from './lab/GamerSection';
 import { AIChatBot } from './lab/AIChatBot';
+import { CreativeShowcase } from './lab/CreativeShowcase'; // Tela nova "React Bits"
 
 const App: React.FC = () => {
   // Estado que define qual "tela" o usuário está vendo agora
-  const [currentView, setCurrentView] = useState<'home' | 'market' | 'gamer' | 'chatbot'>('home');
+  // Adicionamos 'creative' para a nova seção
+  const [currentView, setCurrentView] = useState<'home' | 'market' | 'gamer' | 'chatbot' | 'creative'>('home');
 
   // Função auxiliar para trocar de tela e garantir scroll no topo
-  const handleViewChange = (view: 'home' | 'market' | 'gamer' | 'chatbot') => {
+  const handleViewChange = (view: 'home' | 'market' | 'gamer' | 'chatbot' | 'creative') => {
     setCurrentView(view);
     if (view === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -34,7 +36,6 @@ const App: React.FC = () => {
   return (
     <>
       {/* O Header recebe o estado atual e a função de troca */}
-      {/* O 'as any' previne erros se a tipagem do Header for estrita demais */}
       <Header 
         currentView={currentView} 
         onChangeView={(view) => handleViewChange(view as any)} 
@@ -65,7 +66,6 @@ const App: React.FC = () => {
               </ScrollReveal>
 
               {/* VITRINE (PLAYGROUND) */}
-              {/* Aqui passamos a função para ativar os botões dos cartões */}
               <ScrollReveal>
                 <SectionWrapper id="lab">
                     <Playground onChangeView={handleViewChange} />
@@ -108,6 +108,11 @@ const App: React.FC = () => {
             <AIChatBot onClose={() => handleViewChange('home')} />
           )}
 
+          {/* --- CENÁRIO 5: CREATIVE SHOWCASE (NOVO) --- */}
+          {currentView === 'creative' && (
+            <CreativeShowcase onClose={() => handleViewChange('home')} />
+          )}
+
       </MainContent>
     </>
   );
@@ -145,7 +150,7 @@ const GamerSectionWrapper = styled.div`
     }
 `;
 
-// Botão para sair da tela cheia do Gamer
+// Botão Flutuante para Sair (usado na Gamer Zone)
 const FloatingBackButton = styled.button`
     position: fixed;
     bottom: 30px;
