@@ -11,63 +11,49 @@ interface Experiment {
     icon: string;
     title: string;
     description: string;
-    isLocked: boolean; // Controla se a página já está pronta ou não
     badgeText: string;
-    badgeActive: boolean;
-    isFeatured?: boolean; // Deixa o card com brilho especial (opcional)
+    hoverText: string;
+    isFeatured?: boolean; // Para o efeito roxo especial do Creative UI
 }
 
-// 2. LISTA DE EXPERIMENTOS
+// 2. LISTA DE EXPERIMENTOS (TUDO DESBLOQUEADO)
 const experiments: Experiment[] = [
     {
         id: 'market',
         icon: '💰',
         title: 'Market Monitor',
         description: 'Dashboard financeiro com cotações de Ações (B3), Cripto e Moedas em tempo real.',
-        isLocked: true, // Mudamos para TRUE para bloquear o card por enquanto
-        badgeText: 'EM DESENVOLVIMENTO',
-        badgeActive: false
+        badgeText: 'ONLINE',
+        hoverText: 'ABRIR DASHBOARD'
     },
     {
         id: 'gamer',
         icon: '🎮',
         title: 'Gamer Zone',
         description: 'Interface temática estilo Steam/Cyberpunk com biblioteca de jogos, setup e perfil interativo.',
-        isLocked: true, // Mudamos para TRUE para bloquear
-        badgeText: 'EM BREVE',
-        badgeActive: false
+        badgeText: 'LIVE v2.0',
+        hoverText: 'ENTRAR NA ZONE'
     },
     {
         id: 'chatbot',
         icon: '🤖',
         title: 'AI Assistant',
         description: 'Chatbot inteligente simulado para responder dúvidas sobre o portfólio e tecnologias.',
-        isLocked: false, // Digamos que você queira deixar este ABERTO
         badgeText: 'ONLINE (DEMO)',
-        badgeActive: true
+        hoverText: 'INICIAR CONVERSA'
     },
     {
         id: 'creative',
         icon: '✨',
         title: 'Creative UI',
         description: 'Galeria de componentes visuais avançados (Holo Card, Magnetic Button).',
-        isLocked: false, // Digamos que você queira deixar este ABERTO também
         badgeText: 'NEW',
-        badgeActive: true,
+        hoverText: 'EXPLORAR UI',
         isFeatured: true
     }
 ];
 
 export const Playground: React.FC<PlaygroundProps> = ({ onChangeView }) => {
-    
-    // Função para lidar com o clique
-    const handleCardClick = (exp: Experiment) => {
-        // Só muda de tela se a função onChangeView existir E o card NÃO estiver bloqueado
-        if (onChangeView && !exp.isLocked) {
-            onChangeView(exp.id);
-        }
-    };
-
     return (
         <Container>
             {/* Título Principal */}
@@ -88,35 +74,37 @@ export const Playground: React.FC<PlaygroundProps> = ({ onChangeView }) => {
             </CodeSnippet>
 
             <Grid>
-                {/* 3. RENDERIZAÇÃO DINÂMICA */}
+                {/* 3. RENDERIZAÇÃO DINÂMICA (DRY) */}
                 {experiments.map((exp) => (
                     <Card 
                         key={exp.id}
-                        onClick={() => handleCardClick(exp)}
-                        // Adiciona as classes CSS dependendo do estado do experimento
-                        className={`${exp.isLocked ? 'locked' : ''} ${exp.isFeatured ? 'featured' : ''}`}
+                        onClick={() => onChangeView && onChangeView(exp.id)}
+                        className={exp.isFeatured ? 'featured' : ''}
                     >
                         <div className="icon">{exp.icon}</div>
                         <h3>{exp.title}</h3>
                         <p>{exp.description}</p>
                         
-                        {/* Se for destaque, usa a cor roxa (como no seu código original), senão usa o padrão */}
+                        {/* Se for destaque (Creative UI), usa estilo roxo, senão usa o padrão (verde) */}
                         {exp.isFeatured ? (
-                            <StatusBadge $active={exp.badgeActive} style={{ borderColor: '#d8b4fe', color: '#d8b4fe', background: 'rgba(216, 180, 254, 0.1)' }}>
+                            <StatusBadge 
+                                $active={true} 
+                                style={{ borderColor: '#d8b4fe', color: '#d8b4fe', background: 'rgba(216, 180, 254, 0.1)' }}
+                            >
                                 {exp.badgeText}
                             </StatusBadge>
                         ) : (
-                            <StatusBadge $active={exp.badgeActive}>
+                            <StatusBadge $active={true}>
                                 {exp.badgeText}
                             </StatusBadge>
                         )}
 
-                        {/* Texto de hover que só aparece se não estiver bloqueado */}
-                        {!exp.isLocked && (
-                            <div className="hover-text" style={{ color: exp.isFeatured ? '#d8b4fe' : '#38bdf8' }}>
-                                ABRIR MÓDULO
-                            </div>
-                        )}
+                        <div 
+                            className="hover-text" 
+                            style={{ color: exp.isFeatured ? '#d8b4fe' : '#38bdf8' }}
+                        >
+                            {exp.hoverText}
+                        </div>
                     </Card>
                 ))}
             </Grid>
@@ -124,7 +112,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ onChangeView }) => {
     );
 };
 
-// --- ESTILOS (Mantidos iguaizinhos aos seus!) ---
+// --- ESTILOS ---
 
 const Container = styled.div`
   padding: 80px 20px;
@@ -156,10 +144,11 @@ const CodeSnippet = styled.div`
   text-align: center;
   line-height: 1.6;
 
+  /* Cores de Sintaxe (Tema Drácula/VSCode) */
   .comment { color: #6272a4; font-style: italic; }
   .keyword { color: #ff79c6; } 
-  .var { color: #f8f8f2; }    
-  .string { color: #f1fa8c; } 
+  .var { color: #f8f8f2; }     
+  .string { color: #f1fa8c; }  
 
   @media (max-width: 768px) {
     font-size: 0.85rem;
@@ -186,23 +175,19 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  min-height: 260px;
+  min-height: 260px; 
 
-  &.locked {
-    opacity: 0.6;
-    cursor: not-allowed; /* Mudei para not-allowed para ficar claro que não clica */
-    border-style: dashed;
-  }
-
+  /* Estilo especial para o Card Featured (Creative UI) */
   &.featured {
     border-color: rgba(216, 180, 254, 0.3);
-    &:hover:not(.locked) {
+    &:hover {
         border-color: #d8b4fe;
         box-shadow: 0 10px 40px -10px rgba(216, 180, 254, 0.3);
     }
   }
 
-  &:not(.locked):hover {
+  /* Efeito Hover Padrão */
+  &:hover {
     transform: translateY(-10px);
     background: rgba(30, 41, 59, 0.6);
     
@@ -246,7 +231,6 @@ const Card = styled.div`
     right: 20px;
     font-size: 0.8rem;
     font-weight: bold;
-    color: #38bdf8;
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.3s ease;
