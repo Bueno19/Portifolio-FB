@@ -54,7 +54,11 @@ export const Contact: React.FC = () => {
                         
                         <ContactList>
                             {/* NOVO: Link para o LinkedIn */}
-                            <ContactItem href="https://www.linkedin.com/in/felipe-bueno-rozani-17197217b/" target="_blank">
+                            <ContactItem 
+                        href="https://www.linkedin.com/in/felipe-bueno-rozani-17197217b/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        >
                                 <Icon>💼</Icon>
                                 <div>
                                     <strong>LinkedIn</strong>
