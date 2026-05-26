@@ -1,39 +1,52 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// 1. TIPAGEM: Definimos como uma habilidade deve ser estruturada
+interface Skill {
+    name: string;
+    levelValue: number; // Define a largura da barra visual (ex: 90 para encher quase tudo)
+    levelText: string;  // O texto que o recrutador vai ler (mais seguro que porcentagem)
+    color: string;
+}
+
 export const Skills: React.FC = () => {
-    // Cores e porcentagens para as barras
-    const skills = [
-        { name: 'React & Hooks', percent: 95, color: '#61DAFB' }, // Azul React
-        { name: 'TypeScript', percent: 85, color: '#3178C6' },    // Azul TS
-        { name: 'Styled Components', percent: 90, color: '#DB7093' }, // Rosa
-        { name: 'JavaScript (ES6+)', percent: 92, color: '#F7DF1E' }, // Amarelo
-        { name: 'Node.js', percent: 80, color: '#339933' },       // Verde Node
-        { name: 'SQL / MySQL', percent: 75, color: '#00758F' },    // Azul Banco
+    // 2. DADOS REAIS: Baseado nos repositórios do seu GitHub
+    const skills: Skill[] = [
+        // Frontend Moderno (Maior foco nos seus projetos)
+        { name: 'React & Hooks', levelValue: 90, levelText: 'Avançado', color: '#61DAFB' },
+        { name: 'TypeScript', levelValue: 85, levelText: 'Avançado', color: '#3178C6' },
+        { name: 'JavaScript (ES6+)', levelValue: 85, levelText: 'Avançado', color: '#F7DF1E' },
+        { name: 'Styled Components', levelValue: 90, levelText: 'Avançado', color: '#DB7093' },
         
-        // Novas Linguagens (Backend/Core)
-        { name: 'Java', percent: 70, color: '#f89820' },          // Laranja Java
-        { name: 'C# / .NET', percent: 65, color: '#a179dc' },     // Roxo C#
-        { name: 'Python', percent: 75, color: '#3776AB' },         // Azul Python
-        { name: 'Assembly', percent: 40, color: '#A9A9A9' },       // Cinza
+        // Backend e Banco de Dados (Kiosk Manager)
+        { name: 'PHP & Arquitetura MVC', levelValue: 75, levelText: 'Intermediário', color: '#777BB4' }, 
+        { name: 'SQL / MySQL', levelValue: 70, levelText: 'Intermediário', color: '#00758F' },
+        
+        // Scripts e Automação (Bot de Senhas)
+        { name: 'Python', levelValue: 65, levelText: 'Prática Frequente', color: '#3776AB' },
+        
+        // Ferramentas do dia a dia
+        { name: 'Git & GitHub', levelValue: 80, levelText: 'Avançado', color: '#F05032' },
     ];
 
     return (
         <Container>
             <CodeHeader>
                 <span className="keyword">function</span> <span className="func-name">getSkills</span><span className="params">()</span> <span className="bracket">{'{'}</span>
-                <div className="comment">// Tecnologias que domino e utilizo no dia a dia</div>
+                <div className="comment">// Tecnologias validadas em projetos reais</div>
             </CodeHeader>
 
             <SkillsGrid>
+                {/* 3. RENDERIZAÇÃO: Iterando sobre a nossa nova lista de skills */}
                 {skills.map((skill) => (
                     <SkillCard key={skill.name} $color={skill.color}>
                         <div className="skill-info">
                             <span className="skill-name">{skill.name}</span>
-                            <span className="skill-percent">{skill.percent}%</span>
+                            {/* Aqui usamos o texto descritivo ao invés da porcentagem */}
+                            <span className="skill-level">{skill.levelText}</span>
                         </div>
                         <ProgressBar>
-                            <ProgressFill $width={skill.percent} $color={skill.color} />
+                            <ProgressFill $width={skill.levelValue} $color={skill.color} />
                         </ProgressBar>
                     </SkillCard>
                 ))}
@@ -107,9 +120,11 @@ const SkillCard = styled.div<{ $color: string }>`
         color: #e2e8f0;
     }
 
-    .skill-percent {
+    /* Estilo atualizado para o nível da habilidade */
+    .skill-level {
         color: ${({ $color }) => $color};
         font-weight: bold;
+        font-size: 0.9rem;
     }
 `;
 

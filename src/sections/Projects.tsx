@@ -1,10 +1,59 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// --- INTERFACE DE TIPAGEM ---
+interface Project {
+    id: number;
+    icon: string;
+    title: string;
+    description: React.ReactNode;
+    githubUrl: string;
+    liveUrl?: string; // Opcional: Se não tiver, renderiza o ícone de terminal
+    techs: string[];
+}
+
+// --- DADOS DOS PROJETOS (SEUS 4 REPOSITÓRIOS) ---
+const myBestProjects: Project[] = [
+    {
+        id: 1,
+        icon: '🎨',
+        title: 'Portfólio Profissional',
+        description: <>SPA moderna desenvolvida para demonstração de habilidades técnicas. Foco em <strong>código limpo</strong>, componentização, Glassmorphism e alta fidelidade responsiva.</>,
+        githubUrl: 'https://github.com/Bueno19/Portifolio-FB',
+        liveUrl: 'https://portifolio-fb.vercel.app',
+        techs: ['React', 'TypeScript', 'Styled Components', 'Vite']
+    },
+    {
+        id: 2,
+        icon: '🎟️',
+        title: 'Site de Rifas',
+        description: <>Aplicação interativa para gerenciamento e venda de rifas online, focada em uma <strong>experiência de usuário fluida</strong> e interface intuitiva.</>,
+        githubUrl: 'https://github.com/Bueno19/SiteRifa',
+        techs: ['React', 'TypeScript', 'Styled Components'] 
+    },
+    {
+        id: 3,
+        icon: '🧠',
+        title: 'Segundo Cérebro',
+        description: <>Sistema voltado para gestão de conhecimento e produtividade pessoal. Implementação com foco em <strong>estruturação de dados</strong> e navegação otimizada.</>,
+        githubUrl: 'https://github.com/Bueno19/segundo-cerebro',
+        techs: ['React', 'TypeScript', 'Styled Components'] 
+    },
+    {
+        id: 4,
+        icon: '📂',
+        title: 'Kiosk Manager',
+        description: <>Sistema de PDV robusto para automação comercial. Desenvolvido em arquitetura <strong>MVC nativa</strong> com rotinas de instalação automatizada do banco de dados.</>,
+        githubUrl: 'https://github.com/Bueno19/Quiosque-php',
+        techs: ['PHP 8', 'MySQL', 'MVC', 'POO']
+    }
+];
+
+// --- COMPONENTE PRINCIPAL ---
 export const Projects: React.FC = () => {
     return (
         <Container>
-            {/* CABEÇALHO (Mantido o estilo Array que você gostou) */}
+            {/* CABEÇALHO */}
             <CodeHeader>
                 <div className="line-code">
                     <span className="keyword">const</span> 
@@ -12,101 +61,46 @@ export const Projects: React.FC = () => {
                     <span className="operator"> = </span>
                     <span className="bracket"> [</span>
                 </div>
-                <div className="comment">// Alguns dos códigos que tenho orgulho de ter escrito</div>
+                <div className="comment">// Os melhores códigos que tenho orgulho de ter escrito</div>
             </CodeHeader>
             
             <ProjectsGrid>
-                
-                {/* --- CARD 1: KIOSK MANAGER --- */}
-                <ProjectCard>
-                    <CardTop>
-                        <IconBox>
-                            📂
-                        </IconBox>
-                        <Links>
-                            <a href="https://github.com/Bueno19/Quiosque-php" target="_blank" rel="noopener noreferrer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            </a>
-                            <a href="https://github.com/Bueno19/Quiosque-php#readme" target="_blank" rel="noopener noreferrer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                            </a>
-                        </Links>
-                    </CardTop>
+                {/* RENDERIZAÇÃO DINÂMICA DOS CARDS */}
+                {myBestProjects.map((project) => (
+                    <ProjectCard key={project.id}>
+                        <CardTop>
+                            <IconBox>
+                                {project.icon}
+                            </IconBox>
+                            <Links>
+                                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" title="Ver no GitHub">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                </a>
+                                
+                                {project.liveUrl ? (
+                                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" title="Ver Aplicação Online">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                    </a>
+                                ) : (
+                                    <span className="disabled" title="Deploy não disponível / Executar via Terminal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                                    </span>
+                                )}
+                            </Links>
+                        </CardTop>
 
-                    <CardContent>
-                        <h3>Kiosk Manager</h3>
-                        <p>
-                            Sistema de PDV robusto. Arquitetura <strong>MVC em PHP Puro</strong> com instalação automática de Banco de Dados.
-                        </p>
-                    </CardContent>
+                        <CardContent>
+                            <h3>{project.title}</h3>
+                            <p>{project.description}</p>
+                        </CardContent>
 
-                    <TechTags>
-                        <span>PHP 8</span>
-                        <span>MySQL</span>
-                        <span>MVC</span>
-                    </TechTags>
-                </ProjectCard>
-
-                {/* --- CARD 2: BOT DE SENHA --- */}
-                <ProjectCard>
-                    <CardTop>
-                        <IconBox>
-                            🤖
-                        </IconBox>
-                        <Links>
-                            <a href="https://github.com/Bueno19/Botsenha" target="_blank" rel="noopener noreferrer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            </a>
-                            <span className="disabled" title="Executar via Terminal">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-                            </span>
-                        </Links>
-                    </CardTop>
-
-                    <CardContent>
-                        <h3>Bot de Senha</h3>
-                        <p>
-                            Automação inteligente para segurança. Gera e gerencia senhas fortes automaticamente via script.
-                        </p>
-                    </CardContent>
-
-                    <TechTags>
-                        <span className="python">Python</span>
-                        <span>Automation</span>
-                        <span>Security</span>
-                    </TechTags>
-                </ProjectCard>
-
-                {/* --- CARD 3: PORTFÓLIO --- */}
-                <ProjectCard>
-                    <CardTop>
-                        <IconBox>
-                            🎨
-                        </IconBox>
-                        <Links>
-                            <a href="https://github.com/Bueno19/Portifolio-FB" target="_blank" rel="noopener noreferrer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            </a>
-                            <a href="https://portifolio-fb.vercel.app" target="_blank" rel="noopener noreferrer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                            </a>
-                        </Links>
-                    </CardTop>
-
-                    <CardContent>
-                        <h3>Portfólio Pessoal</h3>
-                        <p>
-                            SPA moderna com animações suaves, Dark Mode e deploy automático na Vercel.
-                        </p>
-                    </CardContent>
-
-                    <TechTags>
-                        <span>React</span>
-                        <span>TypeScript</span>
-                        <span>Styled</span>
-                    </TechTags>
-                </ProjectCard>
-
+                        <TechTags>
+                            {project.techs.map((tech, index) => (
+                                <span key={index} className={tech.toLowerCase()}>{tech}</span>
+                            ))}
+                        </TechTags>
+                    </ProjectCard>
+                ))}
             </ProjectsGrid>
             
             <CodeFooter>
@@ -116,7 +110,7 @@ export const Projects: React.FC = () => {
     );
 };
 
-// --- ESTILOS NOVOS ---
+// --- ESTILOS ---
 
 const Container = styled.div`
     padding: 6rem 2rem;
@@ -157,11 +151,10 @@ const CodeFooter = styled.div`
 const ProjectsGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem; /* Mais espaço entre os cards */
+    gap: 2.5rem; 
 `;
 
 const ProjectCard = styled.div`
-    /* Efeito Glassmorphism Leve */
     background: rgba(30, 41, 59, 0.7); 
     backdrop-filter: blur(10px);
     
@@ -172,14 +165,13 @@ const ProjectCard = styled.div`
     flex-direction: column;
     transition: all 0.4s ease;
     
-    /* Sombra suave */
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 
     &:hover {
         transform: translateY(-10px);
         border-color: #38bdf8;
         background: rgba(30, 41, 59, 0.9);
-        box-shadow: 0 0 30px rgba(56, 189, 248, 0.15); /* Brilho neon ao redor */
+        box-shadow: 0 0 30px rgba(56, 189, 248, 0.15); 
     }
 `;
 
@@ -226,7 +218,7 @@ const Links = styled.div`
 `;
 
 const CardContent = styled.div`
-    flex-grow: 1; /* Empurra as tags para baixo */
+    flex-grow: 1; 
     
     h3 {
         color: #f8fafc;

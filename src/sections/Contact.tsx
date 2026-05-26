@@ -8,10 +8,12 @@ export const Contact: React.FC = () => {
     const [success, setSuccess] = useState(false);
 
     const sendEmail = (e: React.FormEvent) => {
-        e.preventDefault(); // Impede o recarregamento da página
+        e.preventDefault(); 
         setLoading(true);
 
         if (form.current) {
+            // DICA PRO: Em um projeto real, é ideal usar variáveis de ambiente (ex: import.meta.env.VITE_SERVICE_ID)
+            // para não deixar suas chaves expostas no GitHub!
             emailjs.sendForm(
                 'service_hos84z5',    // <--- COLOCAR SEU SERVICE ID AQUI
                 'template_bcivft4',   // <--- COLOCAR SEU TEMPLATE ID AQUI
@@ -22,9 +24,8 @@ export const Contact: React.FC = () => {
                 console.log(result.text);
                 setSuccess(true);
                 setLoading(false);
-                form.current?.reset(); // Limpa o formulário
+                form.current?.reset(); 
                 
-                // Remove a mensagem de sucesso após 5 segundos
                 setTimeout(() => setSuccess(false), 5000);
             }, (error) => {
                 console.log(error.text);
@@ -41,21 +42,23 @@ export const Contact: React.FC = () => {
                     <SectionTitle>
                         <span className="purple">async function</span> <span className="blue">contactMe</span>() {'{'}
                     </SectionTitle>
-                    <SubTitle>// Vamos transformar sua ideia em realidade</SubTitle>
+                    <SubTitle>// Vamos tomar um café virtual e falar sobre código?</SubTitle>
                 </HeaderContent>
 
                 <ContentGrid>
                     {/* Lado Esquerdo: Informações */}
                     <InfoCard>
-                        <InfoTitle>Canais de Comunicação</InfoTitle>
-                        <p>Estou disponível para novos projetos, freelas e parcerias.</p>
+                        <InfoTitle>Conecte-se comigo</InfoTitle>
+                        {/* Texto focado na busca pela vaga */}
+                        <p>Atualmente buscando minha primeira oportunidade como desenvolvedor (Estágio/Júnior). Será um prazer conversar sobre tecnologia e como posso agregar ao seu time!</p>
                         
                         <ContactList>
-                            <ContactItem href="https://wa.link/20s88x" target="_blank" $isWhatsapp>
-                                <Icon>📱</Icon>
+                            {/* NOVO: Link para o LinkedIn */}
+                            <ContactItem href="https://www.linkedin.com/in/felipe-bueno-rozani-17197217b/" target="_blank">
+                                <Icon>💼</Icon>
                                 <div>
-                                    <strong>WhatsApp</strong>
-                                    <span>Chamar agora</span>
+                                    <strong>LinkedIn</strong>
+                                    <span>Ver perfil profissional</span>
                                 </div>
                             </ContactItem>
 
@@ -64,6 +67,14 @@ export const Contact: React.FC = () => {
                                 <div>
                                     <strong>GitHub</strong>
                                     <span>github.com/Bueno19</span>
+                                </div>
+                            </ContactItem>
+
+                            <ContactItem href="https://wa.link/20s88x" target="_blank" $isWhatsapp>
+                                <Icon>📱</Icon>
+                                <div>
+                                    <strong>WhatsApp</strong>
+                                    <span>Chamar agora</span>
                                 </div>
                             </ContactItem>
 

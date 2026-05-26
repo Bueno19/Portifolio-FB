@@ -2,26 +2,31 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 // ⚠️ Certifique-se de ter uma imagem salva em: src/assets/profile.png
-// Se não tiver, comente esta linha e a tag <ProfileImg> temporariamente
 import ProfilePic from '../assets/profile.png'; 
 
-// Animação de flutuação para a foto
+// Animação de flutuação para a foto (Mantida)
 const float = keyframes`
     0% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
 `;
 
+// Nova animação para a tag "Disponível para projetos/estágio"
+const pulse = keyframes`
+    0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+`;
+
 export const Hero: React.FC = () => {
     return (
-        // O ID "home" aqui conecta com o botão "Home" e o Logo do Header
         <HeroSection id="home">
             <GridBackground />
             
             <Container>
                 <Content>
                     <DevBadge>
-                        <span className="dot"></span> Disponível para projetos
+                        <span className="dot"></span> Disponível para Estágio
                     </DevBadge>
                     
                     <Title>
@@ -30,16 +35,18 @@ export const Hero: React.FC = () => {
                     </Title>
                     
                     <Subtitle>
-                        Olá, eu sou <strong>Felipe Bueno</strong>. Transformo linhas de código em 
-                        experiências digitais excepcionais. Especialista em Full-Stack e Mobile.
+                        Olá, eu sou <strong>Felipe Bueno</strong>. Transformo lógica em experiências digitais excepcionais. 
+                        Focado no desenvolvimento <strong>Full-Stack (React & PHP)</strong>, busco minha primeira oportunidade 
+                        para criar soluções reais e aprender com um time incrível.
                     </Subtitle>
                     
                     <ButtonGroup>
-                        <PrimaryButton href="#projects">
+                        <PrimaryButton href="#projects" title="Navegar para a seção de projetos">
                             Ver Projetos <span>-&gt;</span>
                         </PrimaryButton>
                         
-                        <SecondaryButton href="https://github.com/Bueno19" target="_blank">
+                        {/* Mantive o estilo de terminal que você criou, é muito criativo! */}
+                        <SecondaryButton href="https://github.com/Bueno19" target="_blank" rel="noopener noreferrer" title="Acessar meu GitHub">
                             <span>$</span> git checkout perfil
                         </SecondaryButton>
                     </ButtonGroup>
@@ -47,8 +54,7 @@ export const Hero: React.FC = () => {
                 
                 <ImageWrapper>
                    <GlowCircle />
-                   {/* Se não tiver a imagem ainda, remova a linha abaixo */}
-                   <ProfileImg src={ProfilePic} alt="Felipe Bueno" />
+                   <ProfileImg src={ProfilePic} alt="Foto de Felipe Bueno sorrindo e focado" />
                 </ImageWrapper>
             </Container>
         </HeroSection>
@@ -60,7 +66,7 @@ export const Hero: React.FC = () => {
 const HeroSection = styled.section`
     width: 100%;
     position: relative;
-    min-height: 90vh; /* Ocupa quase a tela toda */
+    min-height: 90vh; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,12 +80,10 @@ const GridBackground = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    /* Padrão de grade sutil estilo "tech" */
     background-image: 
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), 
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
-    /* Efeito de fade para desaparecer nas bordas */
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%);
     pointer-events: none;
 `;
@@ -95,7 +99,7 @@ const Container = styled.div`
     margin: 0 auto;
 
     @media (max-width: 900px) {
-        flex-direction: column-reverse; /* No celular, texto vai para baixo da foto */
+        flex-direction: column-reverse; 
         text-align: center;
         gap: 4rem;
         padding-top: 2rem;
@@ -119,13 +123,18 @@ const DevBadge = styled.div`
     font-family: 'Fira Code', monospace;
     margin-bottom: 2rem;
     border: 1px solid rgba(56, 189, 248, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba(56, 189, 248, 0.2);
+    }
 
     .dot {
         width: 8px;
         height: 8px;
         background: #38bdf8;
         border-radius: 50%;
-        box-shadow: 0 0 10px #38bdf8;
+        animation: ${pulse} 2s infinite; /* Adicionado efeito de pulso para chamar atenção */
     }
 `;
 
@@ -259,6 +268,13 @@ const GlowCircle = styled.div`
     height: 100%;
     background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, rgba(0,0,0,0) 70%);
     z-index: -1;
+    transition: transform 0.5s ease;
+
+    /* Aumenta o brilho ao passar o mouse na foto */
+    ${ImageWrapper}:hover & {
+        transform: scale(1.1);
+        background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, rgba(0,0,0,0) 70%);
+    }
 `;
 
 const ProfileImg = styled.img`
@@ -269,6 +285,12 @@ const ProfileImg = styled.img`
     border: 4px solid #1e293b;
     z-index: 2;
     box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+    transition: all 0.4s ease;
+
+    &:hover {
+        border-color: #38bdf8;
+        transform: scale(1.05); /* Um leve zoom na foto ao passar o mouse */
+    }
 
     @media (max-width: 768px) {
         width: 250px;
